@@ -38,6 +38,8 @@ users.post("/register", (req, res) => {
          });
          */
     }).then(user => {
+        //const salt = await bcrypt.gensalt(10);
+        //const hashPassword = await bcrypt.hash(req.body.password,salt)
         if (!user) {
             bcrypt.hash(req.body.password, null, null, (err, hash) => {
                 userdata.password = hash
@@ -70,7 +72,7 @@ users.post("/login", (req, res) => {
     })
         .then(user => {
             if (user) {
-                
+
                 if (bcrypt.compareSync(req.body.password, user.password)) {
                     let token = jwt.sign(user.dataValues, process.env.SECRETKEY, {
                         expiresIn: 1440
